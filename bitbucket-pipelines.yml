@@ -20,5 +20,6 @@ definitions:
       image: mysql:5.7
       environment:
         MYSQL_DATABASE: 'wordpress_tests'
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
         MYSQL_USER: 'wp'
         MYSQL_PASSWORD: 'password'
