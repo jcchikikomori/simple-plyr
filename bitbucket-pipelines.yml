@@ -13,7 +13,7 @@ pipelines:
         services: 
           - mysql
         script:
-          - apt-get update && apt-get install -y unzip svn
+          - apt-get update && apt-get install -y unzip subversion
           - pear -V
           - pear install pear/PHP_CodeSniffer
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
