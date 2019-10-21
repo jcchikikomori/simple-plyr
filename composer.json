@@ -1,0 +1,23 @@
+{
+  "name": "jcchikikomori/simple-plyr",
+  "description": "A Simple Plyr Video Player Plugin",
+  "keywords": [
+    "wordpress",
+    "plugin"
+  ],
+  "homepage": "https://wordpress.org/plugins/simple-plyr/",
+  "authors": [
+    {
+      "name": "bestony",
+      "homepage": "https://github.com/bestony"
+    },
+    {
+      "name": "jcchikikomori",
+      "homepage": "https://github.com/jcchikikomori"
+    }
+  ],
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=5.6"
+  }
+}
