@@ -3,33 +3,22 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: php:7.1.29
-
 pipelines:
   default:
     - step:
-        caches:
-          - composer
-        services: 
-          - mysql
+        image: tfirdaus/wp-docklines:php7.1-fpm-alpine
+        name: "PHP 7.1"
         script:
-          - export PATH=$PATH:/usr/local/mysql/bin/
-          - apt-get update && apt-get install -y unzip subversion
-          - pear -V
-          - pear install pear/PHP_CodeSniffer
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-          - chmod +x wp-cli.phar
-          - mv wp-cli.phar /usr/local/bin/wp
-          - bin/install-wp-tests.sh wordpress_test root '' localhost latest true
-          - composer require phpunit/phpunit
-          - vendor/bin/phpunit
-definitions: 
-  services: 
-    mysql: 
+          ## Run PHPUnit
+          - bash bin/install-wp-tests.sh wordpress_tests wp password 127.0.0.1 latest true
+          - phpunit
+        services:
+          - database
+definitions:
+  services:
+    database:
       image: mysql:5.7
-      variables:
-        MYSQL_DATABASE: 'pipelines'
-        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-        MYSQL_USER: 'test_user'
-        MYSQL_PASSWORD: 'test_user_password'
+      environment:
+        MYSQL_DATABASE: 'wordpress_tests'
+        MYSQL_USER: 'wp'
+        MYSQL_PASSWORD: 'password'
