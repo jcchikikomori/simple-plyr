@@ -13,6 +13,7 @@ pipelines:
         services: 
           - mysql
         script:
+          - export PATH=$PATH:/usr/local/mysql/bin/
           - apt-get update && apt-get install -y unzip subversion
           - pear -V
           - pear install pear/PHP_CodeSniffer
