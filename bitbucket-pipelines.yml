@@ -10,7 +10,7 @@ pipelines:
         name: "PHP 7.1"
         script:
           ## Run PHPUnit
-          - bash bin/install-wp-tests.sh wordpress_tests wp password 127.0.0.1 latest true
+          - bash bin/install-wp-tests.sh wordpress_tests root ahtheung7eiw1iarok9xiezah8He3kan 127.0.0.1 latest true
           - phpunit
         services:
           - database
@@ -20,6 +20,6 @@ definitions:
       image: mysql:5.7
       environment:
         MYSQL_DATABASE: 'wordpress_tests'
-        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-        MYSQL_USER: 'wp'
-        MYSQL_PASSWORD: 'password'
+        MYSQL_RANDOM_ROOT_PASSWORD: 'no'
+        MYSQL_USER: 'root'
+        MYSQL_PASSWORD: 'ahtheung7eiw1iarok9xiezah8He3kan'
