@@ -6,20 +6,32 @@
 pipelines:
   default:
     - step:
-        image: tfirdaus/wp-docklines:php7.1-fpm-alpine
-        name: "PHP 7.1"
+        image: tfirdaus/wp-docklines:php5.6-fpm-alpine
+        name: "PHP 5.6"
         script:
+          ## Run PHPCS
+          - phpcs
           ## Run PHPUnit
-          - bash bin/install-wp-tests.sh wordpress_tests root ahtheung7eiw1iarok9xiezah8He3kan 127.0.0.1 latest true
+          - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
           - phpunit
         services:
           - database
+    - step:
+        image: tfirdaus/wp-docklines:php7.2-fpm-alpine
+        name: "PHP 7.2"
+        script:
+          ## Run PHPCS
+          - phpcs
+          ## Run PHPUnit
+          - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
+          - phpunit
+        services:
+          - database
+
 definitions:
   services:
     database:
-      image: mysql:5.7
+      image: mysql:latest
       environment:
         MYSQL_DATABASE: 'wordpress_tests'
-        MYSQL_RANDOM_ROOT_PASSWORD: 'no'
-        MYSQL_USER: 'root'
-        MYSQL_PASSWORD: 'ahtheung7eiw1iarok9xiezah8He3kan'
+        MYSQL_ROOT_PASSWORD: 'root'
