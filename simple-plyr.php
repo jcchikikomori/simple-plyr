@@ -21,6 +21,7 @@
  * Text Domain:       plyrio
  * Domain Path:       /languages
  */
+
 if ( ! defined( 'WPINC' ) ) {
 	// If this file is called directly, abort.
 	die;
@@ -33,12 +34,12 @@ require __DIR__ . '/vendor/autoload.php';
 /**
  * Add Shortcode
  *
- * @param $atts - optional attribute
+ * @param array $atts User defined attributes in shortcode tag.
  *
  * @return string
- * @throws \RicardoFiorani\Exception\ServiceNotAvailableException
+ * @throws \RicardoFiorani\Exception\ServiceNotAvailableException This will occur if URL content is not available.
  */
-function Plyr_filter( $atts ) {
+function Simple_Plyr_filter( $atts ) {
 	 // Attributes
 	$atts = shortcode_atts(
 		array(
@@ -87,7 +88,7 @@ function Plyr_filter( $atts ) {
  * 
  * @return void
  */
-function Plyr_assets() {
+function Simple_Plyr_assets() {
 	$plugin_url = plugin_dir_url( __FILE__ );
 
 	wp_register_style( 'plyr-style', $plugin_url . 'assets/plyr.css' );
@@ -105,7 +106,7 @@ function Plyr_assets() {
  * 
  * @return void
  */
-function Plyr_quicktags() {
+function Simple_Plyr_quicktags() {
 	if ( wp_script_is( 'quicktags' ) ) {
 		?>
 		<script type="text/javascript">
@@ -119,6 +120,6 @@ function Plyr_quicktags() {
 	}
 }
 
-add_shortcode( 'plyr', 'Plyr_filter' );
-add_action( 'wp_enqueue_scripts', 'Plyr_assets' );
-add_action( 'admin_print_footer_scripts', 'Plyr_quicktags' );
+add_shortcode( 'plyr', 'simple_plyr_filter' );
+add_action( 'wp_enqueue_scripts', 'simple_plyr_assets' );
+add_action( 'admin_print_footer_scripts', 'simple_plyr_quicktags' );
