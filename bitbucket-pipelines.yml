@@ -10,7 +10,7 @@ pipelines:
         name: "PHP 5.6"
         script:
           ## Run PHPCS
-          - phpcs
+          - vendor/bin/phpcs
           ## Run PHPUnit
           - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
           - phpunit
@@ -21,7 +21,7 @@ pipelines:
         name: "PHP 7.2"
         script:
           ## Run PHPCS
-          - phpcs
+          - vendor/bin/phpcs
           ## Run PHPUnit
           - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
           - phpunit
@@ -33,5 +33,5 @@ definitions:
     database:
       image: mysql:latest
       environment:
-        MYSQL_DATABASE: 'wordpress_tests'
-        MYSQL_ROOT_PASSWORD: 'root'
+        MYSQL_DATABASE: "wordpress_tests"
+        MYSQL_ROOT_PASSWORD: "root"
