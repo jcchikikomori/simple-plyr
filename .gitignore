@@ -15,6 +15,7 @@ composer.phar
 
 /vendor/*
 /wpcs/*
+.php_cs.cache
 
 ### WordPress ###
 # ignore everything in the root except the "wp-content" directory.
