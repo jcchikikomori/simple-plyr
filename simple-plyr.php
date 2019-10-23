@@ -1,7 +1,7 @@
 <?php
 /**
  * Simple Plyr plugin updated
- * PHP version 5.6
+ * PHP version 7.1
  *
  * @category Wordpress-plugin
  * @package  Simple_Plyr

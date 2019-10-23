@@ -6,8 +6,8 @@
 pipelines:
   default:
     - step:
-        image: tfirdaus/wp-docklines:php7.2-fpm-alpine
-        name: "PHP 7.2"
+        image: tfirdaus/wp-docklines:php7.1-fpm-alpine
+        name: "PHP 7.1"
         caches:
           - composer
         script:
@@ -17,8 +17,8 @@ pipelines:
           ## Run PHPCS
           - vendor/bin/phpcs
           ## Run PHPUnit
-          - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
-          - phpunit
+          ## - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
+          ## - phpunit
         services:
           - database
 
