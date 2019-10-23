@@ -39,8 +39,8 @@ require __DIR__ . '/vendor/autoload.php';
  * @return string
  * @throws \RicardoFiorani\Exception\ServiceNotAvailableException This will occur if URL content is not available.
  */
-function simple_plyrfilter( $atts ) {
-	// Attributes
+function simple_plyr_filter( $atts ) {
+	// Attributes.
 	$atts = shortcode_atts(
 		array(
 			// (c) Nikon Europe. C.C.
@@ -55,10 +55,10 @@ function simple_plyrfilter( $atts ) {
 
 	// Detects which service the url belongs to and
 	// returns the service's implementation of
-	// RicardoFiorani\Adapter\VideoAdapterInterface
+	// RicardoFiorani\Adapter\VideoAdapterInterface.
 	$video = $vsm->parse( $atts['url'] );
 
-	// if video was from YouTube or Vime
+	// if video was from YouTube or Vime.
 	if ( $video instanceof RicardoFiorani\Adapter\Youtube\YoutubeServiceAdapter
 		|| $video instanceof RicardoFiorani\Adapter\Vimeo\VimeoServiceAdapter
 	) {
@@ -71,7 +71,7 @@ function simple_plyrfilter( $atts ) {
 			$atts['url']
 		);
 	} else {
-		// use HTML5 video code
+		// use HTML5 video code.
 		$str = sprintf(
 			"<video id='plyr-player' poster='%s' controls><source src='%s'
             type='video/mp4'></video>",
@@ -88,17 +88,18 @@ function simple_plyrfilter( $atts ) {
  * 
  * @return void
  */
-function simple_plyrassets() {
+function simple_plyr_assets() {
 	$plugin_url = plugin_dir_url( __FILE__ );
+	// Get the theme data.
+	$theme = wp_get_theme();
 
-	wp_register_style( 'plyr-style', $plugin_url . 'assets/plyr.css' );
+	wp_register_style( 'plyr-style', $plugin_url . 'assets/plyr.css', array(), $theme->get( 'Version' ) );
+	wp_register_script( 'plyr-script', $plugin_url . 'assets/plyr.min.js', array(), $theme->get( 'Version' ), true );
+	wp_register_script( 'plyr-loader-script', $plugin_url . 'assets/loader.js', array(), $theme->get( 'Version' ), true );
+
 	wp_enqueue_style( 'plyr-style' );
-
-	wp_register_script( 'plyr-script', $plugin_url . 'assets/plyr.min.js' );
 	wp_enqueue_script( 'plyr-script' );
-
-	wp_register_script( 'plyr-loader-script', $plugin_url . 'assets/loader.js' );
-	wp_enqueue_script( 'plyr-loader-script' );
+	wp_enqueue_script( 'plyr-loader-script' );  
 }
 
 /**
@@ -106,7 +107,7 @@ function simple_plyrassets() {
  * 
  * @return void
  */
-function simple_plyrquicktags() {
+function simple_plyr_quicktags() {
 	if ( wp_script_is( 'quicktags' ) ) {
 		?>
 		<script type="text/javascript">
