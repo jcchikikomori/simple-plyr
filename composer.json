@@ -25,6 +25,7 @@
     "dealerdirect/phpcodesniffer-composer-installer": "*",
     "object-calisthenics/phpcs-calisthenics-rules": "*",
     "phpcompatibility/php-compatibility": "*",
+    "phpcompatibility/phpcompatibility-wp": "*",
     "wp-coding-standards/wpcs": "*",
     "automattic/vipwpcs": "*"
   },

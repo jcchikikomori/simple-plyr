@@ -39,8 +39,8 @@ require __DIR__ . '/vendor/autoload.php';
  * @return string
  * @throws \RicardoFiorani\Exception\ServiceNotAvailableException This will occur if URL content is not available.
  */
-function Simple_Plyr_filter( $atts ) {
-	 // Attributes
+function simple_plyrfilter( $atts ) {
+	// Attributes
 	$atts = shortcode_atts(
 		array(
 			// (c) Nikon Europe. C.C.
@@ -88,7 +88,7 @@ function Simple_Plyr_filter( $atts ) {
  * 
  * @return void
  */
-function Simple_Plyr_assets() {
+function simple_plyrassets() {
 	$plugin_url = plugin_dir_url( __FILE__ );
 
 	wp_register_style( 'plyr-style', $plugin_url . 'assets/plyr.css' );
@@ -106,7 +106,7 @@ function Simple_Plyr_assets() {
  * 
  * @return void
  */
-function Simple_Plyr_quicktags() {
+function simple_plyrquicktags() {
 	if ( wp_script_is( 'quicktags' ) ) {
 		?>
 		<script type="text/javascript">

@@ -5,27 +5,27 @@
  * @package Simple_Plyr
  */
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+$simple_plyrsimple_plyr_tests_dir = getenv( 'WPsimple_plyr_tests_dir' );
 
-if ( ! $_tests_dir ) {
-	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+if ( ! $simple_plyr_tests_dir ) {
+	$simple_plyr_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
 }
 
-if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
-	echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // WPCS: XSS ok.
+if ( ! file_exists( $simple_plyr_tests_dir . '/includes/functions.php' ) ) {
+	echo "Could not find $simple_plyr_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // WPCS: XSS ok.
 	exit( 1 );
 }
 
 // Give access to tests_add_filter() function.
-require_once $_tests_dir . '/includes/functions.php';
+require_once $simple_plyr_tests_dir . '/includes/functions.php';
 
 /**
  * Manually load the plugin being tested.
  */
-function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/simple-plyr.php';
+function simple_plyr_manually_load_plugin() {
+	include dirname( dirname( __FILE__ ) ) . '/simple-plyr.php';
 }
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+tests_add_filter( 'muplugins_loaded', 'simple_plyr_manually_load_plugin' );
 
 // Start up the WP testing environment.
-require $_tests_dir . '/includes/bootstrap.php';
+require $simple_plyr_tests_dir . '/includes/bootstrap.php';
