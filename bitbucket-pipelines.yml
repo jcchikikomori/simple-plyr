@@ -6,22 +6,6 @@
 pipelines:
   default:
     - step:
-        image: tfirdaus/wp-docklines:php5.6-fpm-alpine
-        name: "PHP 5.6"
-        caches:
-          - composer
-        script:
-          ## Composer
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - composer install
-          ## Run PHPCS
-          - vendor/bin/phpcs
-          ## Run PHPUnit
-          - bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
-          - phpunit
-        services:
-          - database
-    - step:
         image: tfirdaus/wp-docklines:php7.2-fpm-alpine
         name: "PHP 7.2"
         caches:
