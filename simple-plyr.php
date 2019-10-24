@@ -29,8 +29,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 use RicardoFiorani\Matcher\VideoServiceMatcher;
 
-require __DIR__ . '/vendor/autoload.php';
-
 /**
  * Add Shortcode
  *
