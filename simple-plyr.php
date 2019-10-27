@@ -1,67 +1,124 @@
 <?php
 /**
+ * Simple Plyr plugin updated
+ * PHP version 7.1
  *
- * @link              https://github.com/bestony/simple-plyr
- * @since             0.0.1
- * @package           Simple Plyr
+ * @category Wordpress-plugin
+ * @package  Simple_Plyr
+ * @author   John Cyrill Corsanes <jccorsanes@protonmail.com>
+ * @license  https://www.gnu.org/licenses/gpl-3.0.txt gpl-3.0
+ * @link     https://github.com/jcchikikomori/simple-plyr
+ * @since    0.0.2
  *
- * @wordpress-plugin
  * Plugin Name:       Simple Plyr
- * Plugin URI:        https://github.com/bestony/simple-plyr
+ * Plugin URI:        https://github.com/jcchikikomori/simple-plyr
  * Description:       Simple Plyr Video Player
- * Version:           0.0.1
- * Author:            Bestony
- * Author URI:        https://github.com/bestony
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Version:           0.0.2
+ * Author:            John Cyrill Corsanes
+ * Author URI:        https://github.com/jcchikikomori
+ * License:           GPL-3.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:       plyrio
  * Domain Path:       /languages
  */
-// If this file is called directly, abort.
+
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	// If this file is called directly, abort.
+	die;
 }
 
-// Add Shortcode
-function plyr_filter( $atts ) {
+use RicardoFiorani\Matcher\VideoServiceMatcher;
 
-    // Attributes
-    $atts = shortcode_atts(
-        array(
-            'url' => '/path/to/video.mp4',
-            'poster' => '/path/to/poster.jpg',
-        ),
-        $atts,
-        'plyr'
-    );
+/**
+ * Add Shortcode
+ *
+ * @param array $atts User defined attributes in shortcode tag.
+ *
+ * @return string
+ * @throws \RicardoFiorani\Exception\ServiceNotAvailableException This will occur if URL content is not available.
+ */
+function simple_plyr_filter( $atts ) {
+	// Attributes.
+	$atts = shortcode_atts(
+		array(
+			// (c) Nikon Europe. C.C.
+			'url'    => 'https://www.youtube.com/watch?v=gM0qOa_H-rs',
+			'poster' => '/path/to/poster.jpg',
+		),
+		$atts,
+		'plyr'
+	);
 
-    $str = sprintf("<video poster='%s' controls><source src='%s' type='video/mp4'></video><script>plyr.setup();</script>",$atts['poster'],$atts['url']);
+	$vsm = new VideoServiceMatcher();
 
-    return $str;
+	// Detects which service the url belongs to and
+	// returns the service's implementation of
+	// RicardoFiorani\Adapter\VideoAdapterInterface.
+	$video = $vsm->parse( $atts['url'] );
+
+	// if video was from YouTube or Vime.
+	if ( $video instanceof RicardoFiorani\Adapter\Youtube\YoutubeServiceAdapter
+		|| $video instanceof RicardoFiorani\Adapter\Vimeo\VimeoServiceAdapter
+	) {
+		$str = sprintf(
+			"<div class='plyr__video-embed plyr-embed' id='plyr-player' poster='%s'>
+                <iframe src='%s'allowfullscreen allowtransparency allow=\"autoplay\">
+                </iframe>
+            </div>",
+			$atts['poster'],
+			$atts['url']
+		);
+	} else {
+		// use HTML5 video code.
+		$str = sprintf(
+			"<video id='plyr-player' poster='%s' controls><source src='%s'
+            type='video/mp4'></video>",
+			$atts['poster'],
+			$atts['url']
+		);
+	}
+
+	return $str;
 }
-add_shortcode( 'plyr', 'plyr_filter' );
 
-function plyr_assets() {
-    $plugin_url = plugin_dir_url( __FILE__ );
-    wp_register_style( 'plyr-style',$plugin_url . 'assets/plyr.css');
-    wp_enqueue_style( 'plyr-style' );
+/**
+ * Load assets
+ * 
+ * @return void
+ */
+function simple_plyr_assets() {
+	$plugin_url = plugin_dir_url( __FILE__ );
+	// Get the theme data.
+	$theme = wp_get_theme();
 
-    wp_register_script ( 'plyr-script',$plugin_url . 'assets/plyr.js' );
-    wp_enqueue_script ( 'plyr-script' );
+	wp_register_style( 'plyr-style', $plugin_url . 'assets/plyr.css', array(), $theme->get( 'Version' ) );
+	wp_register_script( 'plyr-script', $plugin_url . 'assets/plyr.min.js', array(), $theme->get( 'Version' ), true );
+	wp_register_script( 'plyr-loader-script', $plugin_url . 'assets/loader.js', array(), $theme->get( 'Version' ), true );
+
+	wp_enqueue_style( 'plyr-style' );
+	wp_enqueue_script( 'plyr-script' );
+	wp_enqueue_script( 'plyr-loader-script' );  
 }
-add_action( 'wp_enqueue_scripts', 'plyr_assets' );
 
-
-// Add Quicktags
-function plyr_quicktags() {
-
-    if ( wp_script_is( 'quicktags' ) ) {
-    ?>
-    <script type="text/javascript">
-    QTags.addButton( 'plyr', 'Simple Plyr', '[plyr url="/path/to/video.mp4" poster="/path/to/poster.jpg"]', '', '', 'Plyr Video Player', 141 );
-    </script>
-    <?php
-    }
-
+/**
+ * Add Quicktags
+ * 
+ * @return void
+ */
+function simple_plyr_quicktags() {
+	if ( wp_script_is( 'quicktags' ) ) {
+		?>
+		<script type="text/javascript">
+			QTags.addButton(
+				'plyr', 'Simple Plyr',
+				'[plyr url="/path/to/video.mp4" poster="/path/to/poster.jpg"]',
+				'', '', 'Plyr Video Player', 141
+			);
+		</script>
+		<?php
+	}
 }
-add_action( 'admin_print_footer_scripts', 'plyr_quicktags' );
+
+add_shortcode( 'plyr', 'simple_plyr_filter' );
+add_action( 'wp_enqueue_scripts', 'simple_plyr_assets' );
+add_action( 'admin_print_footer_scripts', 'simple_plyr_quicktags' );
